@@ -4,10 +4,13 @@ import com.mlastovsky.exception.CustomerNotFoundException;
 import com.mlastovsky.mapper.CustomerMapper;
 import com.mlastovsky.model.Customer;
 import com.mlastovsky.model.CustomerRequest;
+import com.mlastovsky.model.CustomerResponse;
 import com.mlastovsky.repository.CustomerRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static java.lang.String.format;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
@@ -49,5 +52,12 @@ public class CustomerService {
         if (request.address() != null) {
             customer.setAddress(request.address());
         }
+    }
+
+    public List<CustomerResponse> findAllCustomers() {
+        return customerRepository.findAll()
+                .stream()
+                .map(mapper::fromCustomer)
+                .toList();
     }
 }
