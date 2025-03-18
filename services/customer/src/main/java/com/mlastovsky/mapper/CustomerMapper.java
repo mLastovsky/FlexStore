@@ -2,6 +2,7 @@ package com.mlastovsky.mapper;
 
 import com.mlastovsky.model.Customer;
 import com.mlastovsky.model.CustomerRequest;
+import com.mlastovsky.model.CustomerResponse;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
 
@@ -22,4 +23,13 @@ public class CustomerMapper {
                 .build();
     }
 
+    public CustomerResponse fromCustomer(Customer customer) {
+        return new CustomerResponse(
+                customer.getId(),
+                customer.getFirstname(),
+                customer.getLastname(),
+                customer.getEmail(),
+                customer.getAddress()
+        );
+    }
 }
