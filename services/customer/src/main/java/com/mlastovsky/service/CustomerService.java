@@ -73,4 +73,9 @@ public class CustomerService {
                         format("Cannot find customer with the provided ID:: %s", id)
                 ));
     }
+
+    public void deleteCustomer(String id) {
+        customerRepository.deleteById(id);
+    }
+
 }
