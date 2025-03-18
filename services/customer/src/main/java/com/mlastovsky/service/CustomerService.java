@@ -60,4 +60,9 @@ public class CustomerService {
                 .map(mapper::fromCustomer)
                 .toList();
     }
+
+    public Boolean existsById(String id) {
+        return customerRepository.findById(id)
+                .isPresent();
+    }
 }
