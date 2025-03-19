@@ -1,8 +1,11 @@
 spring:
+  config:
+    import: optional:file:.env[.properties]
+
   data:
     mongodb:
-      username: ${USER}
-      password: ${PASSWORD}
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
       host: localhost
       port: 27017
       database: customer
