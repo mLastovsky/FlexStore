@@ -1,2 +1,2 @@
 .idea
-.env
+services/config-server/.env
