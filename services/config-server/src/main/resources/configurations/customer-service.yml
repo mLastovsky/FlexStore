@@ -11,6 +11,5 @@ spring:
       database: customer
       authentication-database: admin
 
-
 server:
   port: 8090
