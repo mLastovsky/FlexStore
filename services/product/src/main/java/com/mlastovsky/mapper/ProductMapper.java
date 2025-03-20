@@ -1,9 +1,6 @@
 package com.mlastovsky.mapper;
 
-import com.mlastovsky.model.Category;
-import com.mlastovsky.model.Product;
-import com.mlastovsky.model.ProductRequest;
-import com.mlastovsky.model.ProductResponse;
+import com.mlastovsky.model.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Component;
 
@@ -36,4 +33,13 @@ public class ProductMapper {
         );
     }
 
+    public ProductPurchaseResponse toProductPurchaseResponse(Product product, Double quantity) {
+        return new ProductPurchaseResponse(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                quantity
+        );
+    }
 }
