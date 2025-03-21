@@ -3,6 +3,7 @@ package com.mlastovsky.mapper;
 import com.mlastovsky.model.Order;
 import com.mlastovsky.model.OrderLine;
 import com.mlastovsky.model.OrderLineRequest;
+import com.mlastovsky.model.OrderLineResponse;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +18,12 @@ public class OrderLineMapper {
                         .build())
                 .productId(request.productId())
                 .build();
+    }
+
+    public OrderLineResponse fromOrderLine(OrderLine orderLine) {
+        return new OrderLineResponse(
+
+        );
     }
 
 }
