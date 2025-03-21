@@ -4,11 +4,9 @@ import com.mlastovsky.exception.BusinessException;
 import com.mlastovsky.exception.OrderNotFoundException;
 import com.mlastovsky.kafka.OrderProducer;
 import com.mlastovsky.mapper.OrderMapper;
-import com.mlastovsky.model.OrderConfirmation;
-import com.mlastovsky.model.OrderLineRequest;
-import com.mlastovsky.model.OrderRequest;
-import com.mlastovsky.model.OrderResponse;
+import com.mlastovsky.model.*;
 import com.mlastovsky.proxy.CustomerProxy;
+import com.mlastovsky.proxy.PaymentProxy;
 import com.mlastovsky.proxy.ProductProxy;
 import com.mlastovsky.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +23,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final CustomerProxy customerProxy;
     private final ProductProxy productProxy;
+    private final PaymentProxy paymentProxy;
     private final OrderMapper mapper;
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
@@ -50,7 +49,14 @@ public class OrderService {
             );
         }
 
-        //todo start payment process
+        var paymentRequest = new PaymentRequest(
+                request.amount(),
+                request.paymentMethod(),
+                order.getId(),
+                order.getReference(),
+                customer
+        );
+        paymentProxy.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(
                 new OrderConfirmation(
