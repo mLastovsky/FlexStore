@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4CAF50;
+            font-size: 24px;
+            text-align: center;
+        }
+        .payment-details {
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        .payment-details strong {
+            color: #4CAF50;
+        }
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Payment Confirmation</h1>
+    <p>Hello <span th:text="${customerName}">Customer Name</span>,</p>
+    <p>We are pleased to confirm that your payment has been successfully processed.</p>
+
+    <div class="payment-details">
+        <p><strong>Order Reference:</strong> <span th:text="${orderReference}">12345</span></p>
+        <p><strong>Amount Paid:</strong> <span th:text="${amount}">$100.00</span></p>
+    </div>
+
+    <p>If you have any questions, feel free to <a href="mailto:support@example.com">contact our support team</a>.</p>
+
+    <div class="footer">
+        <p>Thank you for your payment!</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Confirmation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4CAF50;
+            font-size: 24px;
+            text-align: center;
+        }
+        .order-details {
+            margin: 20px 0;
+            font-size: 16px;
+        }
+        .order-details strong {
+            color: #4CAF50;
+        }
+        .footer {
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Order Confirmation</h1>
+    <p>Hello <span th:text="${customerName}">Customer Name</span>,</p>
+    <p>Thank you for your order! We are excited to confirm that your order has been successfully placed.</p>
+
+    <div class="order-details">
+        <p><strong>Order Reference:</strong> <span th:text="${orderReference}">12345</span></p>
+        <p><strong>Total Amount:</strong> <span th:text="${totalAmount}">$100.00</span></p>
+        <p><strong>Products:</strong> <span th:text="${products}">Product A, Product B</span></p>
+    </div>
+
+    <p>If you have any questions, please feel free to <a href="mailto:support@example.com">contact our support team</a>.</p>
+
+    <div class="footer">
+        <p>Thank you for shopping with us!</p>
+    </div>
+</div>
+</body>
+</html>
