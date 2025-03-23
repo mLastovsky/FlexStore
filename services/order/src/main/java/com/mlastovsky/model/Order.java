@@ -34,16 +34,15 @@ public class Order {
 
     private String customerId;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderLine> orderLineList;
 
     @CreatedDate
     @Column(updatable = false, nullable = false)
     private LocalDateTime createdAt;
 
-    @CreatedDate
-    @Column(insertable = false)
     @LastModifiedDate
+    @Column(insertable = false)
     private LocalDateTime lastModifiedAt;
 
 }
