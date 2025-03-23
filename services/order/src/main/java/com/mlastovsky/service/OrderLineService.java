@@ -4,6 +4,7 @@ import com.mlastovsky.mapper.OrderLineMapper;
 import com.mlastovsky.model.OrderLineRequest;
 import com.mlastovsky.model.OrderLineResponse;
 import com.mlastovsky.repository.OrderLineRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderLineService {
 
     private final OrderLineRepository orderLineRepository;

@@ -9,6 +9,7 @@ import com.mlastovsky.proxy.CustomerProxy;
 import com.mlastovsky.proxy.PaymentProxy;
 import com.mlastovsky.proxy.ProductProxy;
 import com.mlastovsky.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ import static java.lang.String.format;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class OrderService {
 
     private final OrderRepository orderRepository;
