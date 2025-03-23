@@ -18,8 +18,6 @@ public record OrderRequest(
         BigDecimal amount,
 
         @NotNull( message = "Payment method should be precised")
-        @NotEmpty( message = "Payment method should be precised")
-        @NotBlank( message = "Payment method should be precised")
         PaymentMethod paymentMethod,
 
         @NotNull( message = "Customer should be present")
