@@ -16,6 +16,6 @@ import java.util.Optional;
 public interface CustomerProxy {
 
     @GetMapping("/{id}")
-    Optional<CustomerResponse> findCustomerById(@PathVariable Long id);
+    Optional<CustomerResponse> findCustomerById(@PathVariable String id);
 
 }
