@@ -18,9 +18,9 @@ public class OrderLineService {
     private final OrderLineRepository orderLineRepository;
     private final OrderLineMapper mapper;
 
-    public Long saveOrderLine(OrderLineRequest request) {
+    public void saveOrderLine(OrderLineRequest request) {
         var order = mapper.toOrderLine(request);
-        return orderLineRepository.save(order).getId();
+        orderLineRepository.save(order);
     }
 
     public List<OrderLineResponse> findAllByOrderId(Long id) {
