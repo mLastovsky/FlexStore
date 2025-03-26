@@ -9,11 +9,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.IntStream;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import static java.lang.String.format;
+import static java.lang.String.*;
+import static java.util.List.*;
 
 @Service
 @RequiredArgsConstructor
@@ -28,21 +29,24 @@ public class ProductService {
     }
 
     public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> requests) {
-        var productIds = extractProductIds(requests);
+        var aggregatedQuantities = aggregateProductQuantities(requests);
+        var productIds = copyOf(aggregatedQuantities.keySet());
+        var storedProducts = fetchProductsByIds(productIds);
 
-        var storedProducts = getStoredProducts(productIds);
-        var storedRequests = sortRequestsById(requests);
-
-        return processProductPurchases(storedProducts, storedRequests);
+        return storedProducts.stream()
+                .map(product -> processSingleProduct(product, aggregatedQuantities.get(product.getId())))
+                .collect(Collectors.toList());
     }
 
-    private List<Long> extractProductIds(List<ProductPurchaseRequest> requests) {
+    private Map<Long, Double> aggregateProductQuantities(List<ProductPurchaseRequest> requests) {
         return requests.stream()
-                .map(ProductPurchaseRequest::id)
-                .toList();
+                .collect(Collectors.groupingBy(
+                        ProductPurchaseRequest::id,
+                        Collectors.summingDouble(ProductPurchaseRequest::quantity)
+                ));
     }
 
-    private List<Product> getStoredProducts(List<Long> productIds) {
+    private List<Product> fetchProductsByIds(List<Long> productIds) {
         var storedProducts = repository.findAllByIdIn(productIds);
         if (productIds.size() != storedProducts.size()) {
             throw new ProductPurchaseException("One or more product does not exist");
@@ -50,32 +54,22 @@ public class ProductService {
         return storedProducts;
     }
 
-    private List<ProductPurchaseRequest> sortRequestsById(List<ProductPurchaseRequest> requests) {
-        return requests.stream()
-                .sorted(Comparator.comparing(ProductPurchaseRequest::id))
-                .toList();
-    }
-
-    private List<ProductPurchaseResponse> processProductPurchases(List<Product> storedProducts, List<ProductPurchaseRequest> storedRequests) {
-        return IntStream.range(0, storedProducts.size())
-                .mapToObj(i -> processSingleProduct(storedProducts.get(i), storedRequests.get(i)))
-                .toList();
-    }
-
-    private ProductPurchaseResponse processSingleProduct(Product product, ProductPurchaseRequest request) {
-        if (product.getAvailableQuantity() < request.quantity()) {
-            throw new ProductPurchaseException(String.format("Insufficient stock quantity for product with ID: %d", request.id()));
+    private ProductPurchaseResponse processSingleProduct(Product product, Double totalQuantity) {
+        if (product.getAvailableQuantity() < totalQuantity) {
+            throw new ProductPurchaseException(
+                    format("Insufficient stock for product with ID: %d", product.getId())
+            );
         }
-        product.setAvailableQuantity(product.getAvailableQuantity() - request.quantity());
+        product.setAvailableQuantity(product.getAvailableQuantity() - totalQuantity);
         repository.save(product);
-        return mapper.toProductPurchaseResponse(product, request.quantity());
+        return mapper.toProductPurchaseResponse(product, totalQuantity);
     }
 
     public ProductResponse findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toProductResponse)
                 .orElseThrow(() -> new ProductNotFoundException(
-                                format("Product not found with ID:: %s", id)
+                                format("Product not found with ID:: %d", id)
                         )
                 );
     }
