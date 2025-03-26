@@ -30,8 +30,8 @@ public class OrderService {
     private final OrderLineService orderLineService;
     private final OrderProducer orderProducer;
 
-    public Long createOrder(OrderRequest request) {
-        var customer = customerProxy.findCustomerById(request.id())
+    public OrderResponse createOrder(OrderRequest request) {
+        var customer = customerProxy.findCustomerById(request.customerId())
                 .orElseThrow(() -> new BusinessException(
                         format("Cannot create order:: No customer exists with provided id:: %d", request.id())
                 ));
@@ -70,7 +70,7 @@ public class OrderService {
                 )
         );
 
-        return order.getId();
+        return mapper.fromOrder(order);
     }
 
     public List<OrderResponse> findAll() {
