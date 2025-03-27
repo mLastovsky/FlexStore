@@ -51,14 +51,15 @@ public class OrderService {
             );
         }
 
-        var paymentRequest = new PaymentRequest(
-                request.amount(),
-                request.paymentMethod(),
-                order.getId(),
-                order.getReference(),
-                customer
+        paymentProxy.requestOrderPayment(
+                new PaymentRequest(
+                        request.amount(),
+                        request.paymentMethod(),
+                        order.getId(),
+                        order.getReference(),
+                        customer
+                )
         );
-        paymentProxy.requestOrderPayment(paymentRequest);
 
         orderProducer.sendOrderConfirmation(
                 new OrderConfirmation(
